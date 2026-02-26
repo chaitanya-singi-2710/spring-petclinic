@@ -12,9 +12,16 @@ pipeline {
         }
         stage ('build and scan') {
             steps {
-             withSonarQubeEnv('sonar_id')
-                sh 'mvn package sonar:sonar'
+             withCredentials([string(credentialsId: 'sonar_id', variable: 'SONAR_TOKEN')]) { 
+             withSonarQubeEnv('sonar_id') {
+                sh '''mvn package sonar:sonar \
+                   -Dsonar.projectKey=chaitanya-singi-2710_spring-petclinic \
+                   -Dsonar,organization=chaitanya-singi-2710 \
+                   -Dsonar.host.url=https://sonarcloud.io/ \
+                   -Dsonar-login=$SONAR_TOKEN'''
+             }   
             }
+          }
         }
     }
 }
