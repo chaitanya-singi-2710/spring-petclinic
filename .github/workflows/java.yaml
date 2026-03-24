@@ -1,15 +1,18 @@
-name: Java-Wokflow
+name: Java-Workflow
 
 on:
   push:
     branches:
       - main
+
 jobs:
   build:
     name: spring-pet
     runs-on: self-hosted
-  steps:
-    name: git checkout
-    uses: actions/checkout@v4
-    name: Build Java with Mvn
-    uses: mvn package       
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Build Java with Maven
+        run: mvn clean package
