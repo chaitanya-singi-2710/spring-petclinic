@@ -25,4 +25,4 @@ jobs:
           org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
           -Dsonar.projectKey=chaitanya-singi-2710_spring-petclinic \
           -Dsonar.organization=chaitanya-singi-2710 \
-          -Dsonar.host.url=https://sonarcloud.io
+          -Dsonar.host.url=${SONAR_HOST_URL}
