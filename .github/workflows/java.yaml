@@ -15,4 +15,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Java with Maven
-        run: mvn clean package
+        run: mvn package
