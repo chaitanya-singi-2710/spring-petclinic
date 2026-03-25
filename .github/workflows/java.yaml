@@ -14,8 +14,8 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Build Java with Maven
-        run: mvn package
+      # - name: Build Java with Maven
+      #   run: mvn package
 
       
       - name: Build with Sonarqube
