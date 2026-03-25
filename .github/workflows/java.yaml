@@ -16,7 +16,7 @@ jobs:
 
       - name: Build Java with Maven
         run: mvn package
-      - name: Build and analyze
+      - name: Sonar Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
