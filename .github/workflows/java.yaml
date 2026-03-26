@@ -16,11 +16,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Build Java with Maven
-        run: mvn package
+      # - name: Build Java with Maven
+      #   run: mvn package
 
       
-      - name: SonarQube Scan
+      - name: Build with Sonarqube
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{secrets.SONAR_HOST_URL}}
         run: |
           mvn -B verify \
           org.sonarsource.scanner.maven:sonar-maven-plugin:5.5.0.6356:sonar \
