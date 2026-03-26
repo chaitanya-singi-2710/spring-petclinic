@@ -22,14 +22,15 @@ jobs:
       
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v4
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
           args: >
             -Dsonar.organization=chaitanya-singi-2710
             -Dsonar.projectName=petclinic
             -Dsonar.projectKey=chaitanya-singi-2710_spring-petclinic
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        
         # run: |
         #   mvn -B verify \
         #   org.sonarsource.scanner.maven:sonar-maven-plugin:5.5.0.6356:sonar \
