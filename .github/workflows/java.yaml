@@ -16,8 +16,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      # - name: Build Java with Maven
-      #   run: mvn package
+      - name: Build Java with Maven
+        run: mvn package
 
       
       - name: Build with Sonarqube
