@@ -18,10 +18,16 @@ jobs:
 
       
       - name: Build + SonarQube Analysis
+        uses: SonarSource/sonarqube-scan-action@v4
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: |
-          mvn -B clean verify sonar:sonar \
-          -Dsonar.projectKey=chaitanya-singi-2710_spring-petclinic \
+        with:
+        args: >
           -Dsonar.organization=chaitanya-singi-2710
+          -Dsonar.projectName=petclinic
+          -Dsonar.projectKey=chaitanya-singi-2710_spring-petclinic 
+        # run: |
+        #   mvn -B clean verify sonar:sonar \
+        #   -Dsonar.projectKey=chaitanya-singi-2710_spring-petclinic \
+        #   -Dsonar.organization=chaitanya-singi-2710
