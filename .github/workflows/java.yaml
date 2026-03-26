@@ -7,19 +7,35 @@ on:
 
 jobs:
   build:
-    name: spring-pet
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Build Java with Maven
-        run: mvn package   
 
+      # 2. Setup Java
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      # 3. Build (MANDATORY)
+      - name: Build Project
+        run: mvn clean package
+
+      # 4. Debug (IMPORTANT for your case)
+      - name: Check compiled classes
+        run: |
+          echo "Checking target/classes..."
+          ls -l target/classes || echo "No classes found"
+
+      # 5. Sonar Scan
       - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@v5 
+        uses: sonarsource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
@@ -27,20 +43,3 @@ jobs:
           args: >
             -Dsonar.projectKey=chaitanya-singi-2710_spring-petclinic
             -Dsonar.java.binaries=target/classes
-            -Dsonar.scanner.skip.binding=true
-
-      
-      # - name: Build + SonarQube Analysis
-      #   uses: SonarSource/sonarqube-scan-action@v4
-      #   env:
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      #   with:
-      #     args: >
-      #       -Dsonar.organization=chaitanya-singi-2710
-      #       -Dsonar.projectName=petclinic
-      #       -Dsonar.projectKey=chaitanya-singi-2710_spring-petclinic 
-        # run: |
-        #   mvn -B clean verify sonar:sonar \
-        #   -Dsonar.projectKey=chaitanya-singi-2710_spring-petclinic \
-        #   -Dsonar.organization=chaitanya-singi-2710
