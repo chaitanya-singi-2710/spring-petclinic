@@ -15,18 +15,30 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Build Java with Maven
+        run: mvn package   
 
-      
-      - name: Build + SonarQube Analysis
-        uses: SonarSource/sonarqube-scan-action@v4
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@v4
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
           args: >
-            -Dsonar.organization=chaitanya-singi-2710
-            -Dsonar.projectName=petclinic
-            -Dsonar.projectKey=chaitanya-singi-2710_spring-petclinic 
+            -Dsonar.projectKey=chaitanya-singi-2710_spring-petclinic
+            -Dsonar.organization=chaitanya-singi-2710    
+
+      
+      # - name: Build + SonarQube Analysis
+      #   uses: SonarSource/sonarqube-scan-action@v4
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #     SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      #   with:
+      #     args: >
+      #       -Dsonar.organization=chaitanya-singi-2710
+      #       -Dsonar.projectName=petclinic
+      #       -Dsonar.projectKey=chaitanya-singi-2710_spring-petclinic 
         # run: |
         #   mvn -B clean verify sonar:sonar \
         #   -Dsonar.projectKey=chaitanya-singi-2710_spring-petclinic \
