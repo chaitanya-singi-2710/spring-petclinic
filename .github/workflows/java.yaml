@@ -19,14 +19,15 @@ jobs:
         run: mvn package   
 
       - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@v4 
+        uses: sonarsource/sonarqube-scan-action@v5 
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
           args: >
             -Dsonar.projectKey=chaitanya-singi-2710_spring-petclinic
-            -Dsonar.java.binaries=target/classes 
+            -Dsonar.java.binaries=target/classes
+            -Dsonar.scanner.skip.binding=true
 
       
       # - name: Build + SonarQube Analysis
