@@ -16,26 +16,23 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Build Java with Maven
-        run: mvn package
-        
-      - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+
+      - name: Build + SonarQube Analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        with:
-          args: >
-            -Dsonar.projectKey=chaitanya-singi-2710_spring-petclinic
-            -Dsonar.organization=chaitanya-singi-2710
-      
-      # - name: Build with Sonarqube
-      #   env:
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      #     SONAR_HOST_URL: ${{secrets.SONAR_HOST_URL}}
-      #   run: |
-      #     mvn -B verify \
-      #     org.sonarsource.scanner.maven:sonar-maven-plugin:5.5.0.6356:sonar \
-      #     -Dsonar.projectKey=chaitanya-singi-2710_spring-petclinic \
-      #     -Dsonar.organization=chaitanya-singi-2710 
-          
+        run: |
+          mvn -B clean verify sonar:sonar \
+          -Dsonar.projectKey=chaitanya-singi-2710_spring-petclinic \
+          -Dsonar.organization=chaitanya-singi-2710
