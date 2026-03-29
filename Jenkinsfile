@@ -35,12 +35,13 @@ pipeline {
     }  
     stage('docker login') {
     steps {
-        sh """docker image pull nginx:1.29
-              aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 635457411502.dkr.ecr.ap-south-1.amazonaws.com
-              docker tag nginx:1.29 635457411502.dkr.ecr.ap-south-1.amazonaws.com/dev/spcimage:latest
-              docker push 635457411502.dkr.ecr.ap-south-1.amazonaws.com/dev/spcimage:latest
-           """
-    }
+        sh '''
+        docker pull nginx:1.29 && \
+        aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 635457411502.dkr.ecr.ap-south-1.amazonaws.com && \
+        docker tag nginx:1.29 635457411502.dkr.ecr.ap-south-1.amazonaws.com/dev/spcimage:latest && \
+        docker push 635457411502.dkr.ecr.ap-south-1.amazonaws.com/dev/spcimage:latest
+    '''
+}
 }
        
 }
