@@ -1,0 +1,46 @@
+name: Java-Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 2. Setup Java
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      # 3. Build (MANDATORY)
+      - name: Build Project
+        run: mvn clean package
+
+      # 4. Debug (IMPORTANT for your case)
+      - name: Check compiled classes
+        run: |
+          echo "Checking target/classes..."
+          ls -l target/classes || echo "No classes found"
+
+      # 5. Sonar Scan
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
+        with:
+          args: >
+            -Dsonar.projectKey=chaitanya-singi-2710_spring-petclinic
+            -Dsonar.organization=chaitanya-singi-2710
+            -Dsonar.java.binaries=target/classes
